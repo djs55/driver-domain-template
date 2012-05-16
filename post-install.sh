@@ -7,11 +7,11 @@ set -e
 set -x
 
 echo Installing base packages from upstream
-yum install kernel autoconf automake make gcc
+yum install gzip kernel autoconf automake make gcc -y
 
 echo Downloading git
 wget http://git-core.googlecode.com/files/git-1.7.10.2.tar.gz
-tar -xvfz git-1.7.10.2.tar.gz
+tar -xvzf git-1.7.10.2.tar.gz
 (cd git-1.7.10.2; ./configure && make && make install)
 
 echo Building ocaml
@@ -22,8 +22,9 @@ tar -xvjf ocaml-3.12.1.tar.bz2
 echo Building findlib
 wget http://download.camlcity.org/download/findlib-1.3.1.tar.gz
 tar -xvzf findlib-1.3.1.tar.gz
-(cd findlib-1.3.1; make all opt && make install)
+(cd findlib-1.3.1; ./configure && make all opt && make install)
 
 echo Building febootstrap
+git clone git://github.com/libguestfs/febootstrap.git
 (cd febootstrap; sh autogen.sh && ./configure && make)
 echo XXX need to patch embedded python
