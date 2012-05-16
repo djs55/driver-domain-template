@@ -21,7 +21,7 @@ if [ ! -x "${EXPAND_GLOB}" ]; then
   exit 1
 fi
 
-FEBOOTSTRAP_OUTPUT=$(mktemp -d febootstrap.XXXXXX)
+FEBOOTSTRAP_OUTPUT=$(pwd)/$(mktemp -d febootstrap.XXXXXX)
 echo "Using febootstrap to add \"$*\" (and \"bash\" for debugging)"
 ${FEBOOTSTRAP} --names bash $* -o ${FEBOOTSTRAP_OUTPUT}
 ROOT=${FEBOOTSTRAP_OUTPUT}/root
@@ -43,4 +43,4 @@ OUTPUT=$(pwd)/initrd
 echo Repacking into ${OUTPUT}
 (cd ${ROOT}; find . | cpio -o -Hnewc | gzip -9c > ${OUTPUT})
 echo Cleaning up
-rm -rf ${ROOT}
+rm -rf ${FEBOOTSTRAP_OUTPUT}
