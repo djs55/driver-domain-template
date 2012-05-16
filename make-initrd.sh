@@ -26,10 +26,17 @@ echo Using febootstrap to add "$*" (and "bash" for debugging)
 ${FEBOOTSTRAP} --names bash $* -o ${FEBOOTSTRAP_OUTPUT}
 ROOT=${FEBOOTSTRAP_OUTPUT}/root
 mkdir ${ROOT}
+
 echo Unpacking base.img into ${ROOT}
 (cd ${ROOT}; cpio -id < ${FEBOOTSTRAP_OUTPUT}/base.img)
 echo Adding hostfiles into ${ROOT}
 (cd ${ROOT}; cat ${FEBOOTSTRAP_OUTPUT}/hostfiles | ${EXPAND_GLOB} | cpio -pdumv .)
+
+EXTRA=$(pwd)/extra.cpio
+echo Looking for optional ${EXTRA}
+echo Unpacking extra.img into ${ROOT}
+(cd ${ROOT}; cpio -id < ${EXTRA})
+
 OUTPUT=$(pwd)/initrd
 echo Repacking into ${OUTPUT}
 (cd ${ROOT}; find . | cpio -o -Hnewc | gzip -9c > ${OUTPUT})
