@@ -44,5 +44,11 @@ sh autogen.sh
 make
 mkdir /tmp/centos
 sudo ./src/febootstrap --names bash -o /tmp/centos
+cd ..
 mkdir /tmp/appliance
-./helper/febootstrap-supermin-helper /tmp/centos/ x86_64 /tmp/appliance/vmlinuz /tmp/appliance/initrd
+# febootstrap-supermin-helper failed by concatenating two cpio archives, leaving us
+# with two "TRAILER!!" records.
+mkdir /tmp/appliance/root
+(cd /tmp/appliance/root; cpio -id < /tmp/centos/base.img)
+(cd /tmp/appliance/root; cat /tmp/centos/hostfiles | ./expand-glob.py | cpio -pdumv .)
+(cd /tmp/appliance/root; find . | cpio -o -H newc | gzip -9c > /tmp/appliance/initrd)
