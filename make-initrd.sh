@@ -7,7 +7,7 @@ set -x
 # package this up as a bootable initrd. Note we also need
 # a suitable kernel from somewhere.
 
-FEBOOTSTRAP=$HOME/src/febootstrap
+FEBOOTSTRAP=$HOME/febootstrap/src/febootstrap
 
 if [ ! -x "${FEBOOTSTRAP}" ]; then
   echo "You need to build febootstrap first. I was expecting to find it in: ${FEBOOTSTRAP}"
@@ -22,7 +22,7 @@ if [ ! -x "${EXPAND_GLOB}" ]; then
 fi
 
 FEBOOTSTRAP_OUTPUT=$(mktemp -d febootstrap.XXXXXX)
-echo Using febootstrap to add "$*" (and "bash" for debugging)
+echo "Using febootstrap to add \"$*\" (and \"bash\" for debugging)"
 ${FEBOOTSTRAP} --names bash $* -o ${FEBOOTSTRAP_OUTPUT}
 ROOT=${FEBOOTSTRAP_OUTPUT}/root
 mkdir ${ROOT}
@@ -32,13 +32,15 @@ echo Unpacking base.img into ${ROOT}
 echo Adding hostfiles into ${ROOT}
 (cd ${ROOT}; cat ${FEBOOTSTRAP_OUTPUT}/hostfiles | ${EXPAND_GLOB} | cpio -pdumv .)
 
-EXTRA=$(pwd)/extra.cpio
-echo Looking for optional ${EXTRA}
-echo Unpacking extra.img into ${ROOT}
-(cd ${ROOT}; cpio -id < ${EXTRA})
+OVERLAY=$(pwd)/overlay
+echo Looking for optional ${OVERLAY}
+if [ -d ${OVERLAY} ]; then
+  echo Copying overlay into ${ROOT}
+  (cd ${OVERLAY}; find . | cpio -pdumv ${ROOT})
+fi
 
 OUTPUT=$(pwd)/initrd
 echo Repacking into ${OUTPUT}
 (cd ${ROOT}; find . | cpio -o -Hnewc | gzip -9c > ${OUTPUT})
 echo Cleaning up
-echo rm -rf ${ROOT}
+rm -rf ${ROOT}
