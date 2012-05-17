@@ -26,6 +26,10 @@ tar -xvzf findlib-1.3.1.tar.gz
 (cd findlib-1.3.1; ./configure && make all opt && make install)
 
 echo Building febootstrap
-git clone git://github.com/libguestfs/febootstrap.git
+git clone git://github.com/djs55/febootstrap.git
+(cd febootstrap; git checkout centos5)
 (cd febootstrap; sh autogen.sh && ./configure && make)
-echo XXX need to patch embedded python
+
+echo Downloading scripts
+git clone git://github.com/djs55/driver-domain-template.git
+
