@@ -6,6 +6,36 @@
 set -e
 set -x
 
+rm -f /etc/yum.repos.d/*.repo
+cat <<EOT >/etc/yum.repos.d/builder.repo
+# CentOS-Base.repo
+#
+# The mirror system uses the connecting IP address of the client and the
+# update status of each mirror to pick mirrors that are updated to and
+# geographically close to the client.  You should use this for CentOS updates
+# unless you are manually picking other mirrors.
+#
+# If the mirrorlist= does not work for you, as a fall back you can try the 
+# remarked out baseurl= line instead.
+#
+#
+
+[base]
+name=base
+baseurl=http://ely.uk.xensource.com/CentOS/\$releasever/os/\$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-5
+
+#released updates 
+[updates]
+name=updates
+baseurl=http://ely.uk.xensource.com/CentOS/\$releasever/updates/\$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-5
+EOT
+
+yum clean all
+
 cd /root
 echo Installing base packages from upstream
 yum install gzip kernel autoconf automake make gcc -y
