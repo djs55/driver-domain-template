@@ -6,6 +6,7 @@
 set -e
 set -x
 
+cd /root
 echo Installing base packages from upstream
 yum install gzip kernel autoconf automake make gcc -y
 
