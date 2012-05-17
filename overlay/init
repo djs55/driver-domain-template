@@ -1,4 +1,10 @@
 #!/bin/bash
-echo Hello
+echo Mounting filesystems
+mount -a
+echo Loading xen-netfront
+/sbin/depmod -a
+/sbin/modprobe xen-netfront
+echo Sending DHCP
+/sbin/dhclient eth0
 exec /bin/bash
 
