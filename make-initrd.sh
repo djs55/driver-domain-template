@@ -39,8 +39,15 @@ if [ -d ${OVERLAY} ]; then
   (cd ${OVERLAY}; find . | cpio -pdumv ${ROOT})
 fi
 
+MODULES=$(pwd)/modules.cpio
+echo Looking for optional ${MODULES}
+if [ -e ${MODULES} ]; then
+  echo UNpacking modules into ${ROOT}
+  (cd ${ROOT}; cpio -id < ${MODULES})
+fi
+
 OUTPUT=$(pwd)/initrd
 echo Repacking into ${OUTPUT}
 (cd ${ROOT}; find . | cpio -o -Hnewc | gzip -9c > ${OUTPUT})
-echo Cleaning up
+echo Removing ${FEBOOTSTRAP_OUTPUT}
 rm -rf ${FEBOOTSTRAP_OUTPUT}
