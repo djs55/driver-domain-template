@@ -38,7 +38,7 @@ yum clean all
 
 cd /root
 echo Installing base packages from upstream
-yum install gzip kernel autoconf automake make gcc -y
+yum install gzip kernel autoconf automake make gcc yum-utils -y
 
 echo Downloading git
 wget http://git-core.googlecode.com/files/git-1.7.10.2.tar.gz
