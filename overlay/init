@@ -4,7 +4,12 @@ mount -a
 echo Loading xen-netfront
 /sbin/depmod -a
 /sbin/modprobe xen-netfront
+echo Loading xen-pcifront
+/sbin/modprobe xen-pcifront
+echo XXX not loading bnx2
+#/sbin/modprobe bnx2
 echo Sending DHCP
+/sbin/ifconfig eth0 up
 /sbin/dhclient eth0
 exec /bin/bash
 
