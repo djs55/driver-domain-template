@@ -1,4 +1,4 @@
-PACKAGES=util-linux dhclient net-tools xe-guest-utilities xe-guest-utilities-xenstore
+PACKAGES=util-linux dhclient net-tools xe-guest-utilities xe-guest-utilities-xenstore pciutils
 
 initrd:
 	sudo ./make-initrd.sh ${PACKAGES}
