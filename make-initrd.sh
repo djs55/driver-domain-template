@@ -22,8 +22,8 @@ if [ ! -x "${EXPAND_GLOB}" ]; then
 fi
 
 FEBOOTSTRAP_OUTPUT=$(pwd)/$(mktemp -d febootstrap.XXXXXX)
-echo "Using febootstrap to add \"$*\" (and \"bash\" for debugging)"
-${FEBOOTSTRAP} --names bash $* -o ${FEBOOTSTRAP_OUTPUT}
+echo "Using febootstrap to add \"$*\""
+${FEBOOTSTRAP} --names $* -o ${FEBOOTSTRAP_OUTPUT}
 ROOT=${FEBOOTSTRAP_OUTPUT}/root
 mkdir ${ROOT}
 
