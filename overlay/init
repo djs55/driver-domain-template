@@ -11,5 +11,16 @@ echo XXX not loading bnx2
 echo Sending DHCP
 /sbin/ifconfig eth0 up
 /sbin/dhclient eth0
+/sbin/ifconfig eth1 169.254.0.2 netmask 255.255.255.0 up
+/sbin/rsyslogd&
+/sbin/ifconfig lo 127.0.0.1 netmask 255.0.0.0 up
+echo Starting udevd
+/sbin/udevd&
+echo Starting NFS services
+/sbin/rpc.statd -p 600 -o 601 &
+/usr/sbin/rpc.idmapd &
+/sbin/portmap &
+echo Starting xcp-sm-fs
+/usr/bin/xcp-sm-fs&
 exec /bin/bash
 
