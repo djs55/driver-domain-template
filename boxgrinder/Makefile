@@ -1,4 +1,8 @@
 
+.PHONY: appliance
+appliance: install
+	boxgrinder-build driver-domain.appl --plugins xcp-boxgrinder-build-driverdomain-os-plugin
+
 .PHONY: install
 install: xcp-boxgrinder-build-driverdomain-os-plugin-0.0.1.gem
 	gem install $<
