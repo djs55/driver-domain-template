@@ -21,6 +21,9 @@ if [ ! -x "${EXPAND_GLOB}" ]; then
   exit 1
 fi
 
+# Make sure the yum metadata cache exists
+yum makecache
+
 FEBOOTSTRAP_OUTPUT=$(pwd)/$(mktemp -d febootstrap.XXXXXX)
 echo "Using febootstrap to add \"$*\""
 ${FEBOOTSTRAP} --names $* -o ${FEBOOTSTRAP_OUTPUT}

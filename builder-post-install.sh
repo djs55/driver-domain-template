@@ -32,6 +32,12 @@ name=updates
 baseurl=http://ely.uk.xensource.com/CentOS/\$releasever/updates/\$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-5
+
+# XCP-specific stuff
+[extra]
+name=extra
+baseurl=http://ely.uk.xensource.com/extra
+gpgcheck=0
 EOT
 
 yum clean all
