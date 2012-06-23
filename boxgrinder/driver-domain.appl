@@ -1,0 +1,22 @@
+name: driver-domain 
+summary: minimal CentOS base image for service domains
+os:
+  name: driverdomain
+  version: 5
+  password: xenroot
+hardware:
+  partitions:
+    "/":
+       size: 2
+packages:
+  - openssh-clients
+  - bash
+  - blktap
+  - kernel
+repos:
+  - name: "XCP"
+    baseurl: http://ely.uk.xensource.com/extra
+  - name: "CentOS-base"
+    baseurl: http://ely.uk.xensource.com/CentOS/5/os/x86_64/
+default_repos: false
+
