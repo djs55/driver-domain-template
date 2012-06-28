@@ -20,6 +20,8 @@ echo Starting NFS services
 /sbin/rpc.statd -p 600 -o 601 &
 /usr/sbin/rpc.idmapd &
 /sbin/portmap &
+echo Setting AIO limit
+/sbin/sysctl -w fs.aio-max-nr=444416
 echo Starting xcp-sm-fs
 /usr/bin/xcp-sm-fs&
 exec /bin/bash
