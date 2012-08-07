@@ -6,15 +6,17 @@ echo Loading xen-netfront
 /sbin/modprobe xen-netfront
 echo Loading xen-pcifront
 /sbin/modprobe xen-pcifront
-echo XXX not loading bnx2
-#/sbin/modprobe bnx2
+echo loading bnx2
+/sbin/modprobe bnx2
 echo Sending DHCP
 /sbin/ifconfig eth0 up
 /sbin/dhclient eth0
-/sbin/ifconfig eth1 up
-/sbin/dhclient eth1
+#/sbin/ifconfig eth1 up
+#/sbin/dhclient eth1
 /sbin/rsyslogd&
 /sbin/ifconfig lo 127.0.0.1 netmask 255.0.0.0 up
+echo Writing to xenstore
+/usr/sbin/xe-update-guest-attrs
 echo Starting udevd
 /sbin/udevd&
 echo Starting NFS services
@@ -25,5 +27,9 @@ echo Setting AIO limit
 /sbin/sysctl -w fs.aio-max-nr=444416
 echo Starting xcp-sm-fs
 /usr/bin/xcp-sm-fs&
+echo Starting fork/exec daemon
+/fe&
+echo Starting xcp-networkd
+/xcp-networkd&
 exec /bin/bash
 

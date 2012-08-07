@@ -49,6 +49,13 @@ if [ -e ${MODULES} ]; then
   (cd ${ROOT}; cpio -id < ${MODULES})
 fi
 
+FIRMWARE=$(pwd)/firmware.cpio
+echo Looking for optional ${FIRMWARE}
+if [ -e ${FIRMWARE} ]; then
+  echo UNpacking firmware into ${ROOT}
+  (cd ${ROOT}; cpio -id < ${FIRMWARE})
+fi
+
 OUTPUT=$(pwd)/initrd
 echo Repacking into ${OUTPUT}
 (cd ${ROOT}; find . | cpio -o -Hnewc | gzip -9c > ${OUTPUT})
